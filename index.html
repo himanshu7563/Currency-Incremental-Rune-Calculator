@@ -296,7 +296,7 @@
         const categoryOrder = [
             "Basic Rune", "Frost Rune", "Sun Rune", "Tunnel Rune", "Cavern Rune", 
             "Lantern Rune", "Energy Rune", "Wave Rune", "Capstone Rune", 
-            "Astryx Rune", "Vornel Rune", "Starlight Rune", "Galaxy Rune", "Heavenly Rune", "Damnation Rune", "Aetheris Rune"
+            "Astryx Rune", "Vornel Rune", "Starlight Rune", "Galaxy Rune", "Heavenly Rune", "Damnation Rune", "Aetheris Rune", "Nythera Rune"
         ];
 
         function parseValue(str) {
@@ -359,6 +359,8 @@
             if(type.includes("Damnation")) return ["#be123c", "#fb7185", "#f43f5e", "fa-skull-crossbones"];
             // Aetheris Color: Orange gradient
             if(type.includes("Aetheris")) return ["#c2410c", "#f97316", "#ea580c", "fa-apple-alt"];
+            // Nythera Color: Bright Green gradient
+            if(type.includes("Nythera")) return ["#166534", "#22c55e", "#86efac", "fa-leaf"];
             return ["#1f2937", "#374151", "#6b7280", "fa-question"];
         }
 
@@ -549,7 +551,18 @@
             { name: "Blueberry", type: "Aetheris Rune", chance: "1/25SxDe", raw: "25sxde", stats: ["x20 Fall Leaves"] },
             { name: "Blue Carrot", type: "Aetheris Rune", chance: "1/125SxDe", raw: "125sxde", stats: ["x0.1 Fall Leaves", "+25k Rune Bulk"] },
             { name: "Plums", type: "Aetheris Rune", chance: "1/625SxDe", raw: "625sxde", stats: ["x0.5 Fall Leaves", "x0.0003 Strawberries (x0.5 Max)", "x0.003 Rune Luck (x5 Max)"] },
-            { name: "Albino Strawberry", type: "Aetheris Rune", chance: "1/5SpDe", raw: "5spde", stats: ["x5 Fall Leaves", "x0.005 Strawberries", "x0.0125 Rune Luck", "+750k Rune Bulk"] }
+            { name: "Albino Strawberry", type: "Aetheris Rune", chance: "1/5SpDe", raw: "5spde", stats: ["x5 Fall Leaves", "x0.005 Strawberries", "x0.0125 Rune Luck", "+750k Rune Bulk"] },
+
+            // Nythera
+            { name: "Dirt", type: "Nythera Rune", chance: "1", raw: "1", stats: ["x0.005 Garden Points"] },
+            { name: "Water", type: "Nythera Rune", chance: "1/1B", raw: "1b", stats: ["x0.0005 Garden Points"] },
+            { name: "Flower", type: "Nythera Rune", chance: "1/1Qn", raw: "1qn", stats: ["x0.0005 Garden Points"] },
+            { name: "Black Sand", type: "Nythera Rune", chance: "1/1Oc", raw: "1oc", stats: ["x0.0005 Garden Points"] },
+            { name: "Sunny", type: "Nythera Rune", chance: "1/20SxDe", raw: "20sxde", stats: ["x0.00025 Garden Points", "x0.01 TDe Boss Shards", "x0.01 QdDe Boss Damage"] },
+            { name: "Cloudy", type: "Nythera Rune", chance: "1/150SxDe", raw: "150sxde", stats: ["x0.002 Garden Points", "x0.0004 Grass", "x0.0004 Garden Damage"] },
+            { name: "Fall", type: "Nythera Rune", chance: "1/10SpDe", raw: "10spde", stats: ["x0.15 Garden Points", "x0.04 Grass", "x0.04 Garden Damage", "+1M Rune Bulk"] },
+            { name: "Potting Soil", type: "Nythera Rune", chance: "1/1.25SpDe", raw: "1.25spde", stats: ["x0.0175 Garden Points", "x0.004 Grass", "x0.004 Garden Damage", "x0.005 Rune Luck"] },
+            { name: "Magical Garden", type: "Nythera Rune", chance: "1/200SpDe", raw: "200spde", stats: ["x3.5 Garden Points", "x1 Grass", "x1 Garden Damage", "x0.01 Rune Luck"] }
         ];
 
         window.calculate = function() {
