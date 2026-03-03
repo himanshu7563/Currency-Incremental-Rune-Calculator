@@ -296,7 +296,7 @@
         const categoryOrder = [
             "Basic Rune", "Frost Rune", "Sun Rune", "Tunnel Rune", "Cavern Rune", 
             "Lantern Rune", "Energy Rune", "Wave Rune", "Capstone Rune", 
-            "Astryx Rune", "Vornel Rune", "Starlight Rune", "Galaxy Rune", "Heavenly Rune", "Damnation Rune", "Aetheris Rune", "Nythera Rune"
+            "Astryx Rune", "Vornel Rune", "Starlight Rune", "Galaxy Rune", "Heavenly Rune", "Damnation Rune", "Aetheris Rune", "Nythera Rune", "Veydris Rune"
         ];
 
         function parseValue(str) {
@@ -361,6 +361,8 @@
             if(type.includes("Aetheris")) return ["#c2410c", "#f97316", "#ea580c", "fa-apple-alt"];
             // Nythera Color: Bright Green gradient
             if(type.includes("Nythera")) return ["#166534", "#22c55e", "#86efac", "fa-leaf"];
+            // Veydris Color: Golden/Orange gradient from SS
+            if(type.includes("Veydris")) return ["#b45309", "#d97706", "#fcd34d", "fa-leaf"];
             return ["#1f2937", "#374151", "#6b7280", "fa-question"];
         }
 
@@ -398,6 +400,7 @@
             { name: "Oasis", type: "Sun Rune", chance: "1b", raw: "1b", stats: ["x7.5 Sand", "x2.5 Fossils", "x1 Better Points (x1 max)", "x0.2 Oil"] },
             { name: "Sun God", type: "Sun Rune", chance: "50b", raw: "50b", stats: ["x5 Oil", "x2 Better Points (x10 max)", "x5 Tier Luck (x20 max)", "x0.5 Rune Luck (x2 max)"] },
             { name: "Temple God", type: "Sun Rune", chance: "25Qn", raw: "25Qn", stats: ["x0.02 Rune Luck (x0.2 max)", "+25 Rune Bulk (+500 max)", "x5 Tier Luck (x75 max)", "+25 Tier Bulk (+250 max)"] },
+            { name: "Passive God", type: "Sun Rune", chance: "1/4OcDe", raw: "4ocde", stats: ["x0.001 Passive Luck", "+3.5M Rune Bulk", "x0.02 Rune Luck", "x5 Tier Bulk"] },
 
             { name: "Glimmer", type: "Tunnel Rune", chance: "1.25", raw: "1.25", stats: ["x0.0000025 Stone"] },
             { name: "Hollow", type: "Tunnel Rune", chance: "6.67", raw: "6.67", stats: ["x0.000005 Coal"] },
@@ -518,6 +521,7 @@
             { name: "Destruction", type: "Galaxy Rune", chance: "1.5QnDe", raw: "1.5qnde", stats: ["x200B Cosmic Points", "x5Qd Uranite", "x500B Neptunite", "x50M Plutite"] },
             { name: "Creation", type: "Galaxy Rune", chance: "1.5QnDe", raw: "1.5qnde", stats: ["x50B Light Points", "x5Qd Uranite", "x500B Neptunite", "x50M Plutite"] },
             { name: "Unknown Otherworldly", type: "Galaxy Rune", chance: "35QnDe", raw: "35qnde", stats: ["x7.5T Cosmic Points", "x2T Light Points", "x3.5B Plutite", "x0.05 Sunite"] },
+            { name: "Forgotten Dimension", type: "Galaxy Rune", chance: "1/250OcDe", raw: "250ocde", stats: ["x125Qn Cosmic Points", "x40Qn Light Points", "x150Qn Plutite", "x750M Sunite"] },
 
             { name: "Faded", type: "Heavenly Rune", chance: "1", raw: "1", stats: ["x0.000000000000000000000000000000005 Grace"] },
             { name: "Blesed", type: "Heavenly Rune", chance: "1/2m", raw: "2m", stats: ["x0.0000000000000000525 Grace"] },
@@ -562,7 +566,20 @@
             { name: "Cloudy", type: "Nythera Rune", chance: "1/150SxDe", raw: "150sxde", stats: ["x0.002 Garden Points", "x0.0004 Grass", "x0.0004 Garden Damage"] },
             { name: "Fall", type: "Nythera Rune", chance: "1/10SpDe", raw: "10spde", stats: ["x0.15 Garden Points", "x0.04 Grass", "x0.04 Garden Damage", "+1M Rune Bulk"] },
             { name: "Potting Soil", type: "Nythera Rune", chance: "1/1.25SpDe", raw: "1.25spde", stats: ["x0.0175 Garden Points", "x0.004 Grass", "x0.004 Garden Damage", "x0.005 Rune Luck"] },
-            { name: "Magical Garden", type: "Nythera Rune", chance: "1/200SpDe", raw: "200spde", stats: ["x3.5 Garden Points", "x1 Grass", "x1 Garden Damage", "x0.01 Rune Luck"] }
+            { name: "Magical Garden", type: "Nythera Rune", chance: "1/200SpDe", raw: "200spde", stats: ["x3.5 Garden Points", "x1 Grass", "x1 Garden Damage", "x0.01 Rune Luck"] },
+
+            // Veydris
+            { name: "Planted", type: "Veydris Rune", chance: "1", raw: "24.1no", stats: ["x20 Fall Leaves"] },
+            { name: "Pond", type: "Veydris Rune", chance: "1/22.5B", raw: "10.7sx", stats: ["x50 Fall Leaves"] },
+            { name: "Toxic Flower", type: "Veydris Rune", chance: "1/450Qn", raw: "536b", stats: ["x1 Fall Leaves"] },
+            { name: "Honey", type: "Veydris Rune", chance: "1/10No", raw: "65", stats: ["x22.5 Fall Leaves", "x0.0005 Flowers"] },
+            { name: "Blossom", type: "Veydris Rune", chance: "1/10SpDe", raw: "10spde", stats: ["x200 Fall Leaves", "x0.0125 Flowers", "x0.003 Honey"] },
+            { name: "Deadly Bush", type: "Veydris Rune", chance: "1/45SpDe", raw: "45spde", stats: ["x975 Fall Leaves", "x0.06 Flowers", "x0.015 Honey"] },
+            { name: "Autumn Garden", type: "Veydris Rune", chance: "1/225SpDe", raw: "225spde", stats: ["x5k Fall Leaves", "x0.3 Flowers", "x0.075 Honey"] },
+            { name: "Mystical Garden", type: "Veydris Rune", chance: "1/1OcDe", raw: "1ocde", stats: ["x22.5k Fall Leaves", "x1.5 Flowers", "x0.35 Honey", "x0.002 Rune Luck"] },
+            { name: "Garden Relic", type: "Veydris Rune", chance: "1/5OcDe", raw: "5ocde", stats: ["x125k Fall Leaves", "x8 Flowers", "x2 Honey", "+1M Rune Bulk"] },
+            { name: "The Bee Hive", type: "Veydris Rune", chance: "1/500OcDe", raw: "500ocde", stats: ["x25Qd Tier Luck", "x25 Tier Bulk", "x0.05 Rune Luck", "+15M Rune Bulk"] },
+            { name: "Poisonous Wasp", type: "Veydris Rune", chance: "1/25OcDe", raw: "25ocde", stats: ["x1M Fall Leaves", "x75 Flowers", "x15 Honey", "x0.01 Rune Luck"] }
         ];
 
         window.calculate = function() {
