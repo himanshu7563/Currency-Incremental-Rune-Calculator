@@ -30,6 +30,14 @@
                 radial-gradient(circle at 90% 90%, rgba(34, 197, 94, 0.08) 0%, transparent 40%);
             background-attachment: fixed;
             color: #f8fafc; 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; 
+        }
+
+        @media (max-width: 1023px) {
+            body { overflow-y: auto; height: auto; } 
         }
 
         .font-game { font-family: 'Russo One', sans-serif; }
@@ -122,10 +130,9 @@
         }
     </style>
 </head>
-<!-- Body Layout: Normal scroll mobile, No scroll on body for Desktop (h-screen) -->
 <body class="p-2 md:p-4 lg:p-6 min-h-screen flex flex-col lg:h-screen lg:overflow-hidden">
 
-    <!-- HEADER TOP BANNER (Always fixed height, shrink-0) -->
+    <!-- HEADER TOP BANNER -->
     <header class="w-full shrink-0 mb-4 lg:mb-6">
         <div class="glass-panel p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-6 border-b-8 border-blue-600/30">
             <div class="flex items-center gap-5">
@@ -153,11 +160,10 @@
         </div>
     </header>
 
-    <!-- MAIN INTERFACE WRAPPER (flex-1 forces it to fill remaining screen height on desktop) -->
+    <!-- MAIN INTERFACE WRAPPER -->
     <div class="flex-1 flex flex-col lg:flex-row gap-4 lg:gap-6 min-h-0">
         
         <!-- SIDEBAR: CONTROLS -->
-        <!-- Desktop: fixed width, full height of wrapper. Mobile: normal width/height -->
         <aside class="w-full lg:w-[360px] shrink-0 flex flex-col lg:h-full z-30">
             <div class="glass-panel p-5 flex flex-col lg:h-full min-h-0">
                 <div class="flex items-center justify-between mb-6 shrink-0">
@@ -170,7 +176,6 @@
                     <button id="toggleMobileMenu" class="lg:hidden text-xs font-bold bg-slate-800 px-4 py-2 rounded-xl border-2 border-slate-700 text-blue-400 uppercase">Settings</button>
                 </div>
 
-                <!-- Independent Scroll Column 1 (Only scrolls on Desktop if content exceeds) -->
                 <div id="sideContent" class="space-y-6 lg:flex-1 lg:overflow-y-auto pr-2 pb-4">
                     <!-- Base Stats -->
                     <div class="space-y-4">
@@ -235,7 +240,7 @@
         <!-- RIGHT PANEL: TOOLBAR & RUNE GRID -->
         <main class="flex-1 flex flex-col min-h-0">
             
-            <!-- Toolbar (Fixed above grid on desktop) -->
+            <!-- Toolbar -->
             <div class="flex flex-col sm:flex-row gap-3 mb-4 shrink-0 bg-slate-950/50 p-2 rounded-xl lg:bg-transparent lg:p-0">
                 <div class="relative flex-1">
                     <i class="fas fa-search absolute left-4 top-3.5 text-slate-500"></i>
@@ -251,13 +256,11 @@
                 </div>
             </div>
 
-            <!-- Independent Scroll Column 2 (Grid) -->
-            <!-- flex-1 makes it take remaining height, overflow-y-auto makes it scroll -->
+            <!-- Scrollable Grid Wrapper -->
             <div class="lg:flex-1 lg:overflow-y-auto pr-2 pb-10 lg:pb-0">
                 <div id="runesGrid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
                     <!-- Cards will be injected via JS -->
                 </div>
-                <!-- Bottom padding to ensure last card isn't blocked by screen edge -->
                 <div class="h-10 lg:h-20 w-full"></div>
             </div>
 
@@ -289,12 +292,21 @@
             return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : '255, 255, 255';
         }
 
+        // Category Colors - Updated to match the solid bright colors in the screenshot
+        function getCategoryColor(type) {
+            if(type === "Coin Rune") return "#3cf03c"; // Bright Green
+            if(type === "Nature Rune") return "#fff021"; // Bright Yellow
+            if(type === "Cash Rune") return "#21b1ff"; // Bright Blue
+            if(type === "Town Rune") return "#ff128a"; // Bright Pink
+            return "#94a3b8"; // Default Grey
+        }
+
         function getCardStyle(type) {
-            if(type === "Coin Rune") return ["#22c55e", "fa-coins"];
-            if(type === "Nature Rune") return ["#facc15", "fa-leaf"]; 
-            if(type === "Cash Rune") return ["#3b82f6", "fa-money-bill-wave"];
-            if(type === "Town Rune") return ["#ec4899", "fa-building"];
-            return ["#94a3b8", "fa-question"];
+            if(type === "Coin Rune") return [getCategoryColor("Coin Rune"), "fa-coins"];
+            if(type === "Nature Rune") return [getCategoryColor("Nature Rune"), "fa-leaf"]; 
+            if(type === "Cash Rune") return [getCategoryColor("Cash Rune"), "fa-money-bill-wave"];
+            if(type === "Town Rune") return [getCategoryColor("Town Rune"), "fa-building"];
+            return [getCategoryColor("Default"), "fa-question"];
         }
 
         function getTierColor(tier) {
@@ -456,7 +468,7 @@
                 rune.tier.toLowerCase().includes(searchTerm)
             );
 
-            // Detailed Sorting System
+            // Sorting System
             filtered.sort((a, b) => {
                 if (window.sortConfig.mode === 'category') {
                     const catA = categoryOrder.indexOf(a.type);
@@ -496,24 +508,28 @@
                 const tierRgb = hexToRgb(tierColor);
                 const [bgDark, bgLight] = getTierBackground(tierColor, rune.tier);
 
-                // Insert Category Header Logic (Only in Category Mode)
+                // Add Vibrant Category Header Logic
                 if (window.sortConfig.mode === 'category' && rune.type !== currentCategory) {
                     currentCategory = rune.type;
                     const catCount = filtered.filter(r => r.type === currentCategory).length;
                     
                     const header = document.createElement('div');
-                    header.className = 'col-span-full mt-2 mb-1';
+                    header.className = 'col-span-full mt-4 mb-2';
                     header.innerHTML = `
-                        <div class="bg-slate-900/90 border-2 border-slate-700 p-3 rounded-xl flex items-center justify-between shadow-lg" style="border-left-color: ${typeColor};">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-lg flex items-center justify-center text-xl shadow-inner" style="background: ${typeColor}25; color: ${typeColor}; border: 1px solid ${typeColor}40;">
-                                    <i class="fas ${iconClass}"></i>
-                                </div>
-                                <h3 class="text-xl md:text-2xl font-game text-white tracking-widest uppercase" style="text-shadow: 0 2px 4px rgba(0,0,0,0.5)">${currentCategory}</h3>
+                        <div class="p-3 md:p-4 rounded-2xl flex items-center justify-between border-[3px] border-slate-900 relative overflow-hidden" 
+                             style="background-color: ${typeColor}; box-shadow: 0 6px 0 #0f172a, inset 0 -5px 0 rgba(0,0,0,0.2);">
+                            <!-- Pattern overlay -->
+                            <div class="absolute inset-0 opacity-[0.15]" style="background-image: url('data:image/svg+xml,%3Csvg width=\\'20\\' height=\\'20\\' viewBox=\\'0 0 20 20\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cg fill=\\'%23000000\\' fill-opacity=\\'1\\' fill-rule=\\'evenodd\\'%3E%3Ccircle cx=\\'3\\' cy=\\'3\\' r=\\'3\\'/%3E%3Ccircle cx=\\'13\\' cy=\\'13\\' r=\\'3\\'/%3E%3C/g%3E%3C/svg%3E');"></div>
+                            
+                            <div class="flex items-center gap-3 relative z-10">
+                                <h3 class="text-2xl md:text-4xl font-game text-white tracking-widest uppercase" 
+                                    style="-webkit-text-stroke: 2px black; text-shadow: 0 4px 0px rgba(0,0,0,1);">
+                                    ${currentCategory}
+                                </h3>
                             </div>
-                            <div class="bg-black/50 px-3 py-1.5 rounded-lg border border-white/10 flex items-center gap-2">
-                                <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Total</span>
-                                <span class="text-white font-game text-lg leading-none">${catCount}</span>
+                            <div class="bg-black/40 px-4 py-2 rounded-xl border-2 border-black/50 flex items-center gap-2 relative z-10 backdrop-blur-sm">
+                                <span class="text-black text-xs font-black uppercase tracking-wider drop-shadow-md" style="color: rgba(255,255,255,0.9); -webkit-text-stroke: 1px black;">Total</span>
+                                <span class="text-white font-game text-2xl leading-none" style="-webkit-text-stroke: 1px black; text-shadow: 0 2px 0px rgba(0,0,0,1);">${catCount}</span>
                             </div>
                         </div>
                     `;
