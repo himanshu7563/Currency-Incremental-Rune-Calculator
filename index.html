@@ -352,7 +352,7 @@
             if(tier === "Epic") return "#e879f9"; 
             if(tier === "Legendary") return "#facc15"; 
             if(tier === "Mythical") return "#ef4444"; 
-            if(tier === "Secret") return "#000000"; 
+            if(tier === "Secret") return "#71717a"; // Visible grey for borders
             if(tier === "Celestial") return "#8b5cf6"; // Neon Indigo/Purple
             return "#ffffff";
         }
@@ -605,15 +605,25 @@
                     window.calculate();
                 };
                 
+                // Naya text style Secret tier ke liye taaki wo dark bg pe chamke
+                let tierTextUI = '';
+                if (rune.tier === 'Secret') {
+                    tierTextUI = `<div class="text-[12px] font-game uppercase tracking-wider" style="color: #0f172a; -webkit-text-stroke: 1px #cbd5e1; text-shadow: 0 2px 10px rgba(255,255,255,0.4);">
+                        ${rune.tier}
+                    </div>`;
+                } else {
+                    tierTextUI = `<div class="text-[11px] font-game uppercase tracking-wider" style="color: ${tierColor}; text-shadow: 0 0 10px ${tierColor}80">
+                        ${rune.tier}
+                    </div>`;
+                }
+
                 card.innerHTML = `
                     <div class="relative z-10">
                         <div class="flex justify-between items-start mb-2">
                             <div class="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded border border-white/10 flex items-center gap-1.5" style="background: rgba(${catRgb}, 0.15); color: ${typeColor};">
                                 <i class="fas ${iconClass}"></i> ${rune.type}
                             </div>
-                            <div class="text-[11px] font-game uppercase tracking-wider" style="color: ${tierColor}; text-shadow: 0 0 10px ${tierColor}80">
-                                ${rune.tier}
-                            </div>
+                            ${tierTextUI}
                         </div>
                         <h4 class="text-2xl font-game text-white mb-3 truncate" style="text-shadow: 0 2px 4px rgba(0,0,0,0.5)">${rune.name}</h4>
                         <div class="bg-black/50 rounded-lg p-2.5 border border-white/5 space-y-1.5">
